@@ -14,19 +14,23 @@ input.addEventListener(
     const trimmedValue = input.value.trim();
     cleanHtml();
     if (trimmedValue !== '') {
-      fetchCountries(trimmedValue).then(foundData => {
-        if (foundData.length > 10) {
-          Notify.info(
-            'Too many matches found. Please enter a more specific name.'
-          );
-        } else if (foundData.length === 0) {
-          Notify.failure('Oops, there is no country with that name');
-        } else if (foundData.length >= 2 && foundData.length <= 10) {
-          renderCountryList(foundData);
-        } else if (foundData.length === 1) {
-          renderOneCountry(foundData);
-        }
-      });
+      fetchCountries(trimmedValue)
+        .then(foundData => {
+          if (foundData.length > 10) {
+            Notify.info(
+              'Too many matches found. Please enter a more specific name.'
+            );
+          } else if (foundData.length === 0) {
+            Notify.failure('Oops, there is no country with that name');
+          } else if (foundData.length >= 2 && foundData.length <= 10) {
+            renderCountryList(foundData);
+          } else if (foundData.length === 1) {
+            renderOneCountry(foundData);
+          }
+        })
+        .catch(error => {
+          console.error(error);
+        });
     }
   }, DEBOUNCE_DELAY)
 );
